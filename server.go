@@ -1,4 +1,4 @@
-package filedownloader
+package main
 
 import (
 	"fmt"
