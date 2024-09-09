@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"flag"
 	"net/http"
 )
 
@@ -15,7 +16,15 @@ func main() {
 	// Decode body in bytes -> make sure no errors
 	// Transform, write the file locally
 
-	response, err := http.Get("url")
+	urlFlag := flag.String("url", "", "Download HTTP URl for file")
+	flag.Parse()
+	url := *urlFlag
+
+	if (url == "") {
+		fmt.Println("Provided download URL is empty...")
+	}
+
+	response, err := http.Get(url)
 
 	if err != nil {
 		fmt.Println("Error while performing GET request")
@@ -26,7 +35,7 @@ func main() {
 	}
 
 	mimeType := response.Header.Get(("Content-Type"))
-	fmt.Println("Downloaded content type: ", mimeType)
+	fmt.Println("Detected content-type: ", mimeType)
 
 	body, err := io.ReadAll(response.Body)
 
@@ -71,7 +80,8 @@ func main() {
 	}
 
 	fileExtension := commonMIMEtypes[mimeType]
-	file, err := os.Create("downloaded_file" + fileExtension)
+	fileName := "downloaded_file" + fileExtension
+	file, err := os.Create(fileName)
 	defer file.Close()
 	
 	bytesWritten, err := file.Write(body)
@@ -85,6 +95,6 @@ func main() {
 	}
 
 	fmt.Println("No of bytes copied: " + string(bytesWritten))
-	fmt.Println("File downloaded successfully and saved to current local directory.")
+	fmt.Println(fmt.Sprintf("File downloaded successfully. Check your current local directory %s", fileName))
 
 }
