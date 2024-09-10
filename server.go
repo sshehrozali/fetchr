@@ -105,5 +105,5 @@ func main() {
 
 	fmt.Printf("Downloaded file size: %d bytes\n", bytesWritten)
 	fmt.Println(fmt.Sprintf("File downloaded successfully. Check your current local directory %s", fileName))
-
+	os.Exit(0)
 }
