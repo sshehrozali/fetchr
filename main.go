@@ -151,13 +151,13 @@ func saveLocally(data DownloadResult) {
 	os.Exit(0)
 }
 
-
-
-
-func main() {
-
+func run() {
 	url := promptInput()
 	downloadResult := downloadFile(url)
 	saveLocally(downloadResult)
+}
 
+
+func main() {
+	run()
 }

@@ -9,12 +9,14 @@ import (
     "github.com/stretchr/testify/assert"
 )
 
-func TestDownloadFile(t *testing.T) {
-    // Create a mock server
-    server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        w.Write([]byte("mock downloaded content"))
-    }))
-    defer server.Close()
+func TestPromptInput(t *testing.T) {
+	// xyz logic
+}
 
-	
+func TestDownloadFile(t *testing.T) {
+	// xyz logic
+}
+
+func TestSaveLocally(t *testing.T) {
+	// xyz logic
 }
