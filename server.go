@@ -5,7 +5,26 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"time"
 )
+
+func loader(done chan bool) {
+	symbols := []string{"|", "/", "-", "\\"}
+
+	i := 0
+	for {
+		select {
+		case <-done:
+			return
+		default:
+			fmt.Printf("\r%s", symbols[i%len(symbols)])
+			i++
+			time.Sleep(100 * time.Millisecond)
+
+		}
+	}
+
+}
 
 func fileExtensionRetriever(mimeType string) string {
 	commonMIMEtypes := map[string]string{
@@ -65,7 +84,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	fmt.Println("\nFetching data from the server...")
+
+	// Start loader in a goroutine
+	done := make(chan bool)
+	go loader(done)
+
 	response, err := http.Get(url)
+
+	// Stop the loader once request is finished, close the channel
+	done <- true
+	close(done)
 
 	if err != nil {
 		fmt.Println("\nError while performing GET request.")
@@ -104,6 +133,6 @@ func main() {
 	}
 
 	fmt.Printf("Downloaded file size: %d bytes\n", bytesWritten)
-	fmt.Println(fmt.Sprintf("File downloaded successfully. Check your current local directory %s", fileName))
+	fmt.Println(fmt.Sprintf("File downloaded successfully. Check your current local directory %s\n", fileName))
 	os.Exit(0)
 }
