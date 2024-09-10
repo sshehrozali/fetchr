@@ -93,7 +93,7 @@ func main() {
 		fmt.Println("No bytes written in file...")
 	}
 
-	fmt.Println("No of bytes copied: " + string(bytesWritten))
+	fmt.Printf("Downloaded file size: %d bytes\n", bytesWritten)
 	fmt.Println(fmt.Sprintf("File downloaded successfully. Check your current local directory %s", fileName))
 
 }
