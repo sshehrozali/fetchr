@@ -7,42 +7,7 @@ import (
 	"os"
 )
 
-func main() {
-
-	// Perform HTTP GET request
-	// Ensure status is 200OK and no error
-	// Check file MIME type
-	// Decode body in bytes -> make sure no errors
-	// Transform, write the file locally
-
-	var url string
-
-	fmt.Print("Enter download URL: ")
-	fmt.Scanln(&url)
-
-	if url == "" {
-		fmt.Println("Provided download URL is empty...")
-	}
-
-	response, err := http.Get(url)
-
-	if err != nil {
-		fmt.Println("Error while performing GET request")
-	}
-
-	if response.StatusCode != http.StatusOK {
-		fmt.Println("Request failed with HTTP status: ", response.StatusCode)
-	}
-
-	mimeType := response.Header.Get(("Content-Type"))
-	fmt.Println("Detected content-type: ", mimeType)
-
-	body, err := io.ReadAll(response.Body)
-
-	if err != nil {
-		fmt.Println("Error while decoding response body")
-	}
-
+func fileExtensionRetriever(mimeType string) string {
 	commonMIMEtypes := map[string]string{
 		// Text types
 		"text/plain":      ".txt",
@@ -79,18 +44,63 @@ func main() {
 	}
 
 	fileExtension := commonMIMEtypes[mimeType]
-	fileName := "downloaded_file" + fileExtension
+	return fileExtension
+}
+
+func main() {
+
+	// Perform HTTP GET request
+	// Ensure status is 200OK and no error
+	// Check file MIME type
+	// Decode body in bytes -> make sure no errors
+	// Transform, write the file locally
+
+	var url string
+
+	fmt.Print("Enter download URL: ")
+	fmt.Scanln(&url)
+
+	if url == "" {
+		fmt.Println("\nProvided download URL is empty.")
+		os.Exit(1)
+	}
+
+	response, err := http.Get(url)
+
+	if err != nil {
+		fmt.Println("\nError while performing GET request.")
+		os.Exit(1)
+	}
+
+	if response.StatusCode != http.StatusOK {
+		fmt.Println("Request failed with HTTP status: ", response.StatusCode)
+		os.Exit(1)
+	}
+
+	mimeType := response.Header.Get(("Content-Type"))
+	fmt.Println("\nDetected content-type: ", mimeType)
+
+	body, err := io.ReadAll(response.Body)
+
+	if err != nil {
+		fmt.Println("Error while reading response body.")
+		os.Exit(1)
+	}
+
+	fileName := "downloaded_file" + fileExtensionRetriever(mimeType)
 	file, err := os.Create(fileName)
 	defer file.Close()
 
 	bytesWritten, err := file.Write(body)
 
 	if err != nil {
-		fmt.Println("Error while writing data in file...")
+		fmt.Println("Error copying bytes locally.")
+		os.Exit(1)
 	}
 
 	if bytesWritten <= 0 {
-		fmt.Println("No bytes written in file...")
+		fmt.Println("0 bytes copied.")
+		os.Exit(1)
 	}
 
 	fmt.Printf("Downloaded file size: %d bytes\n", bytesWritten)
