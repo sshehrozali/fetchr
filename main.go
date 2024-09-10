@@ -66,31 +66,19 @@ func fileExtensionRetriever(mimeType string) string {
 	return fileExtension
 }
 
-func main() {
+type DownloadResult struct {
+    Body     []byte
+    MimeType string
+}
 
-	// Perform HTTP GET request
-	// Ensure status is 200OK and no error
-	// Check file MIME type
-	// Decode body in bytes -> make sure no errors
-	// Transform, write the file locally
-
-	var url string
-
-	fmt.Print("Enter download URL: ")
-	fmt.Scanln(&url)
-
-	if url == "" {
-		fmt.Println("\nProvided download URL is empty.")
-		os.Exit(1)
-	}
-
+func downloadFile(url string) DownloadResult {
 	fmt.Println("\nFetching data from the server...")
 
 	// Start loader in a goroutine
 	done := make(chan bool)
 	go loader(done)
 
-	response, err := http.Get(url)
+	response, err := http.Get(url) // Perform GET request to server
 
 	// Stop the loader once request is finished, close the channel
 	done <- true
@@ -109,18 +97,49 @@ func main() {
 	mimeType := response.Header.Get(("Content-Type"))
 	fmt.Println("\nDetected content-type: ", mimeType)
 
-	body, err := io.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body) // Parse body into byte[]
 
 	if err != nil {
 		fmt.Println("Error while reading response body.")
 		os.Exit(1)
 	}
 
-	fileName := "downloaded_file" + fileExtensionRetriever(mimeType)
-	file, err := os.Create(fileName)
-	defer file.Close()
+	return DownloadResult{
+		Body: body,
+		MimeType: mimeType,
+	}
+}
 
-	bytesWritten, err := file.Write(body)
+func main() {
+
+	// Perform HTTP GET request
+	// Ensure status is 200OK and no error
+	// Check file MIME type
+	// Decode body in bytes -> make sure no errors
+	// Transform, write the file locally
+
+	var url string
+
+	fmt.Print("Enter download URL: ")
+	fmt.Scanln(&url)
+
+	if url == "" {
+		fmt.Println("\nProvided download URL is empty.")
+		os.Exit(1)
+	}
+
+	downloadResult := downloadFile(url)
+
+	fileName := "downloaded_file" + fileExtensionRetriever(downloadResult.MimeType)
+	file, fileErr := os.Create(fileName)
+	if fileErr != nil {
+		fmt.Printf("Error opening %s\n", fileName)
+		defer file.Close()
+		os.Exit(1)
+	}
+	defer file.Close()	// Close the file automatically once I/O operations are finished 
+
+	bytesWritten, err := file.Write(downloadResult.Body)
 
 	if err != nil {
 		fmt.Println("Error copying bytes locally.")
@@ -133,6 +152,6 @@ func main() {
 	}
 
 	fmt.Printf("Downloaded file size: %d bytes\n", bytesWritten)
-	fmt.Println(fmt.Sprintf("File downloaded successfully. Check your current local directory %s\n", fileName))
+	fmt.Printf("File downloaded successfully. Check your current local directory %s\n", fileName)
 	os.Exit(0)
 }
