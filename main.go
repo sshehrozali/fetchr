@@ -8,6 +8,9 @@ import (
 	"time"
 )
 
+// GLOBALs
+var exit = os.Exit
+
 func loader(done chan bool) {
 	symbols := []string{"|", "/", "-", "\\"}
 
@@ -79,7 +82,7 @@ func promptInput() string {
 
 	if url == "" {
 		fmt.Println("\nProvided download URL is empty.")
-		os.Exit(1)
+		exit(1)
 	}
 
 	return url
