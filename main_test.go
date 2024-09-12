@@ -1,7 +1,6 @@
 package main
 
 import (
-
 	"os"
 	"testing"
 
@@ -9,45 +8,40 @@ import (
 )
 
 func TestPromptInputIfUrlIsValidThenReturn(t *testing.T) {
-    // Given
-	originalStdin := os.Stdin   // make a copy of original stdin before execution
-    mockUrl := "www.example.com/download\n"
-    setMockCliInput(mockUrl)
+	// Given
+	originalStdin := os.Stdin // make a copy of original stdin before execution
+	mockUrl := "www.example.com/download\n"
+	setMockCliInput(mockUrl)
 
-    // When
+	// When
 	actualUrl := promptInput()
 
-    // Then
+	// Then
 	assert.Equal(t, "www.example.com/download", actualUrl, "Expected equals actual")
 
 	os.Stdin = originalStdin // restore original stdin
 }
 
 func TestPromptInputIfUrlIsEmptyThenExitwithCode1(t *testing.T) {
-	exit = mockExit
-	exitCode = 0 // reset exit code before execution
+	// arrange
+    originalStdin := os.Stdin
+    originalStdout := os.Stdout
+	exit = mockExit // replace original os.Exit() with mockExit()
+	exitCode = 0    // default exit code
+	mockInvalidUrl := "\n"
+	setMockCliInput(mockInvalidUrl)
+    stdReadOutput, stdWriteOutput := captureStdOutput()
 
-	mockUrl := "\n"
+    // act
+	promptInput()
 
+    // assert
+    assert.Equal(t, 1, exitCode, "Expected exit code 1 for empty URL")
+    assertStdOutput(stdReadOutput, stdWriteOutput, "Provided download URL is em", t)
 
-	// Open pipe for read-write
-	r, w, err := os.Pipe()
-	if err != nil {
-		return
-	}
-
-	w.Write([]byte(mockUrl))
-	w.Close()
-
-	// Replace stdin with read-end
-	os.Stdin = r
-
-	// // Capture output to check the printed error message
-	// var stdOutputBuf bytes.Buffer
-	// fmt.
-
-	// actualUrl := promptInput()
-
+    // cleanup
+    os.Stdin = originalStdin
+    os.Stdout = originalStdout
 }
 
 func TestDownloadFile(t *testing.T) {
