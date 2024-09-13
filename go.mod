@@ -1,4 +1,4 @@
-module filedownloder
+module filedownloader
 
 go 1.23.0
 
