@@ -70,8 +70,8 @@ func fileExtensionRetriever(mimeType string) string {
 }
 
 type DownloadResult struct {
-    Body     []byte
-    MimeType string
+	Data     []byte
+	MimeType string
 }
 
 func promptInput() string {
@@ -122,22 +122,22 @@ func downloadFile(url string) DownloadResult {
 	}
 
 	return DownloadResult{
-		Body: body,
+		Data:     body,
 		MimeType: mimeType,
 	}
 }
 
-func saveLocally(data DownloadResult) {
-	fileName := "downloaded_file" + fileExtensionRetriever(data.MimeType)
+func saveLocally(downloadResult DownloadResult) {
+	fileName := "downloaded_file" + fileExtensionRetriever(downloadResult.MimeType)
 	file, fileErr := os.Create(fileName)
 	if fileErr != nil {
 		fmt.Printf("Error opening %s\n", fileName)
 		defer file.Close()
 		os.Exit(1)
 	}
-	defer file.Close()	// Close the file automatically once I/O operations are finished 
+	defer file.Close() // Close the file automatically once I/O operations are finished
 
-	bytesWritten, err := file.Write(data.Body)
+	bytesWritten, err := file.Write(downloadResult.Data)
 
 	if err != nil {
 		fmt.Println("Error copying bytes locally.")
@@ -159,7 +159,6 @@ func run() {
 	downloadResult := downloadFile(url)
 	saveLocally(downloadResult)
 }
-
 
 func main() {
 	run()
