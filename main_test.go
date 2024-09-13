@@ -24,24 +24,24 @@ func TestPromptInputIfUrlIsValidThenReturn(t *testing.T) {
 
 func TestPromptInputIfUrlIsEmptyThenExitwithCode1(t *testing.T) {
 	// arrange
-    originalStdin := os.Stdin
-    originalStdout := os.Stdout
+	originalStdin := os.Stdin
+	originalStdout := os.Stdout
 	exit = mockExit // replace original os.Exit() with mockExit()
 	exitCode = 0    // default exit code
 	mockInvalidUrl := "\n"
 	setMockCliInput(mockInvalidUrl)
-    stdReadOutput, stdWriteOutput := captureStdOutput()
+	stdReadOutput, stdWriteOutput := captureStdOutput()
 
-    // act
+	// act
 	promptInput()
 
-    // assert
-    assert.Equal(t, 1, exitCode, "Expected exit code 1 for empty URL")
-    assertStdOutput(stdReadOutput, stdWriteOutput, "Provided download URL is em", t)
+	// assert
+	assert.Equal(t, 1, exitCode, "Expected exit code 1 for empty URL")
+	assertStdOutput(stdReadOutput, stdWriteOutput, "Provided download URL is empty.", t)
 
-    // cleanup
-    os.Stdin = originalStdin
-    os.Stdout = originalStdout
+	// cleanup
+	os.Stdin = originalStdin
+	os.Stdout = originalStdout
 }
 
 func TestDownloadFile(t *testing.T) {

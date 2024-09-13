@@ -28,10 +28,10 @@ func captureStdOutput() (*os.File, *os.File) {
 }
 
 func assertStdOutput(rOut *os.File, wOut *os.File, expected string, t *testing.T) {
-	    // Close and reset os.Stdout so we can read the output
-		wOut.Close()
-		var buf bytes.Buffer
-		buf.ReadFrom(rOut)
+	// Close and reset os.Stdout so we can read the output
+	wOut.Close()
+	var buf bytes.Buffer
+	buf.ReadFrom(rOut)
 
-		assert.Contains(t, buf.String(), expected)
+	assert.Contains(t, buf.String(), expected)
 }
