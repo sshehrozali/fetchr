@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"io"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
 
 func TestPromptInputIfUrlIsValidThenReturn(t *testing.T) {
@@ -62,7 +61,7 @@ func TestDownloadFile(t *testing.T) {
 	result := downloadFile(mockHttpClient, "http://example.com")
 
 	// assert
-	assert.Equal(t, "mock body", result.Data)
+	assert.Equal(t, string("mock body"), result.Data)
 	assert.Equal(t, "text/plain", result.MimeType)
 
 	mockHttpClient.AssertExpectations(t) // verify mock was called
