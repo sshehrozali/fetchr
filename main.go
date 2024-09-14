@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"filedownloader/network/clients"
+	"filedownloader/network"
 )
 
 // GLOBALs
@@ -88,14 +90,14 @@ func promptInput() string {
 	return url
 }
 
-func downloadFile(url string) DownloadResult {
+func downloadFile(networkClient clients.HttpClient, url string) DownloadResult {
 	fmt.Println("\nFetching data from the server...")
 
 	// Start loader in a goroutine
 	done := make(chan bool)
 	go loader(done)
 
-	response, err := http.Get(url) // Perform GET request to server
+	response, err := networkClient.Get(url)
 
 	// Stop the loader once request is finished, close the channel
 	done <- true
@@ -156,7 +158,10 @@ func saveLocally(downloadResult DownloadResult) {
 
 func run() {
 	url := promptInput()
-	downloadResult := downloadFile(url)
+
+	httpClient := &network.DefaultHttpClient{}
+	downloadResult := downloadFile(httpClient, url)
+	
 	saveLocally(downloadResult)
 }
 
