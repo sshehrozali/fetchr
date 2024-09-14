@@ -3,7 +3,9 @@ package main
 import (
 	"os"
 	"testing"
-
+	"net/http"
+	"bytes"
+	"io"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -46,8 +48,24 @@ func TestPromptInputIfUrlIsEmptyThenExitwithCode1(t *testing.T) {
 }
 
 func TestDownloadFile(t *testing.T) {
-	// xyz logic
+	// arrange
+	mockHttpClient := new(MockHttpClient)
+	mockResponse := &http.Response{
+        StatusCode: http.StatusOK,
+        Body:       io.NopCloser(bytes.NewBufferString("mock body")),
+        Header:     http.Header{"Content-Type": []string{"text/plain"}},
+    }
 
+	mockHttpClient.On("Get", "http://example.com").Return(mockResponse, nil)	// stub the http call
+
+	// act
+	result := downloadFile(mockHttpClient, "http://example.com")
+
+	// assert
+	assert.Equal(t, "mock body", result.Data)
+	assert.Equal(t, "text/plain", result.MimeType)
+
+	mockHttpClient.AssertExpectations(t) // verify mock was called
 }
 
 func TestSaveLocally(t *testing.T) {
