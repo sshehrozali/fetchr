@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestPromptInputIfUrlIsValidThenReturn(t *testing.T) {
@@ -46,6 +47,7 @@ func TestPromptInputIfUrlIsEmptyThenExitwithCode1(t *testing.T) {
 
 func TestDownloadFile(t *testing.T) {
 	// xyz logic
+
 }
 
 func TestSaveLocally(t *testing.T) {
