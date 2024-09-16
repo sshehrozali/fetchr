@@ -46,7 +46,7 @@ func TestPromptInputIfUrlIsEmptyThenExitwithCode1(t *testing.T) {
 	os.Stdout = originalStdout
 }
 
-func TestDownloadFile(t *testing.T) {
+func TestDownloadFileIfHttpStatusIs200ThenReturnDownloadResult(t *testing.T) {
 	// arrange
 	mockHttpClient := new(MockHttpClient)
 	mockResponse := &http.Response{
@@ -61,7 +61,7 @@ func TestDownloadFile(t *testing.T) {
 	result := downloadFile(mockHttpClient, "http://example.com")
 
 	// assert
-	assert.Equal(t, string("mock body"), result.Data)
+	assert.Equal(t, "mock body", string(result.Data))
 	assert.Equal(t, "text/plain", result.MimeType)
 
 	mockHttpClient.AssertExpectations(t) // verify mock was called
