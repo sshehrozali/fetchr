@@ -28,7 +28,6 @@ func loader(done chan bool) {
 
 		}
 	}
-
 }
 
 func fileExtensionRetriever(mimeType string) string {
@@ -105,12 +104,12 @@ func downloadFile(networkClient clients.HttpClient, url string) DownloadResult {
 
 	if err != nil {
 		fmt.Println("\nError while performing GET request.")
-		os.Exit(1)
+		exit(1)
 	}
 
 	if response.StatusCode != http.StatusOK {
 		fmt.Println("Request failed with HTTP status: ", response.StatusCode)
-		os.Exit(1)
+		exit(1)
 	}
 
 	mimeType := response.Header.Get(("Content-Type"))
@@ -161,7 +160,7 @@ func run() {
 
 	httpClient := &network.DefaultHttpClient{}
 	downloadResult := downloadFile(httpClient, url)
-	
+
 	saveLocally(downloadResult)
 }
 

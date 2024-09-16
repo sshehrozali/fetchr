@@ -1,12 +1,12 @@
 package main
 
 import (
+	"bytes"
+	"github.com/stretchr/testify/assert"
+	"io"
+	"net/http"
 	"os"
 	"testing"
-	"net/http"
-	"bytes"
-	"io"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestPromptInputIfUrlIsValidThenReturn(t *testing.T) {
@@ -50,12 +50,12 @@ func TestDownloadFileIfHttpStatusIs200ThenReturnDownloadResult(t *testing.T) {
 	// arrange
 	mockHttpClient := new(MockHttpClient)
 	mockResponse := &http.Response{
-        StatusCode: http.StatusOK,
-        Body:       io.NopCloser(bytes.NewBufferString("mock body")),
-        Header:     http.Header{"Content-Type": []string{"text/plain"}},
-    }
+		StatusCode: http.StatusOK,
+		Body:       io.NopCloser(bytes.NewBufferString("mock body")),
+		Header:     http.Header{"Content-Type": []string{"text/plain"}},
+	}
 
-	mockHttpClient.On("Get", "http://example.com").Return(mockResponse, nil)	// stub the http call
+	mockHttpClient.On("Get", "http://example.com").Return(mockResponse, nil) // stub the http call
 
 	// act
 	result := downloadFile(mockHttpClient, "http://example.com")
@@ -65,6 +65,37 @@ func TestDownloadFileIfHttpStatusIs200ThenReturnDownloadResult(t *testing.T) {
 	assert.Equal(t, "text/plain", result.MimeType)
 
 	mockHttpClient.AssertExpectations(t) // verify mock was called
+}
+
+func TestDownloadFileIfHttpStatusIsNot200ThenExitWithCode1(t *testing.T) {
+	// arrange
+	originalStdin := os.Stdin
+	originalStdout := os.Stdout
+	exit = mockExit // replace original os.Exit() with mockExit()
+	exitCode = 0    // default exit code
+
+	mockHttpClient := new(MockHttpClient)
+	mockResponse := &http.Response{
+		StatusCode: http.StatusInternalServerError,
+		Body:       io.NopCloser(bytes.NewBufferString("internal server error")),
+		Header:     http.Header{"Content-Type": []string{"text/plain"}},
+	}
+
+	mockHttpClient.On("Get", "http://example.com").Return(mockResponse, nil) // stub the http call
+	stdReadOutput, stdWriteOutput := captureStdOutput()
+
+	// act
+	downloadFile(mockHttpClient, "http://example.com")
+
+	// assert
+	assert.Equal(t, 1, exitCode, "Expected exit code 1 for empty URL")
+	assertStdOutput(stdReadOutput, stdWriteOutput, "Request failed with HTTP status: ", t)
+
+	mockHttpClient.AssertExpectations(t) // verify mock was called
+
+	// cleanup
+	os.Stdin = originalStdin
+	os.Stdout = originalStdout
 }
 
 func TestSaveLocally(t *testing.T) {

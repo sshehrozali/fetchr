@@ -22,7 +22,7 @@ func setMockCliInput(mockInput string) {
 func captureStdOutput() (*os.File, *os.File) {
 	// Capture os.Stdout output to verify printed messages
 	rOut, wOut, _ := os.Pipe()
-	os.Stdout = wOut // redirect all output to the pipe
+	os.Stdout = wOut // write stdout in pipe
 
 	return rOut, wOut
 }
