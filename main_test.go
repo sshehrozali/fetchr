@@ -98,6 +98,6 @@ func TestDownloadFileIfHttpStatusIsNot200ThenExitWithCode1(t *testing.T) {
 	os.Stdout = originalStdout
 }
 
-func TestSaveLocally(t *testing.T) {
+func TestSaveLocallyIfFileCopiedSuccessfully(t *testing.T) {
 	// xyz logic
 }

@@ -8,6 +8,7 @@ import (
 	"time"
 	"filedownloader/network/clients"
 	"filedownloader/network"
+	"filedownloader/file"
 )
 
 // GLOBALs
@@ -161,6 +162,7 @@ func run() {
 	httpClient := &network.DefaultHttpClient{}
 	downloadResult := downloadFile(httpClient, url)
 
+	fileWriter := &file.DefaultFileWriter{}
 	saveLocally(downloadResult)
 }
 
