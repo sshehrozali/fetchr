@@ -33,7 +33,7 @@ func NewDownloader(networkClient NetworkClient, storage Storage) *Downloader {
 	}
 }
 
-func (d *Downloader) download(url string) (models.DownloadResult, error) {
+func (d *Downloader) Download(url string) (models.DownloadResult, error) {
 	fmt.Println("\nFetching data from the server...")
 
 	// then start loader
@@ -70,7 +70,7 @@ func (d *Downloader) download(url string) (models.DownloadResult, error) {
 	}, nil
 }
 
-func (d *Downloader) save(downloadResult models.DownloadResult) error {
+func (d *Downloader) Save(downloadResult models.DownloadResult) error {
 	fileName := "downloaded_file" + utils.FileExtensionRetriever(downloadResult.MimeType)
 
 	size, error := d.storage.SaveLocally(fileName, downloadResult.Data)
