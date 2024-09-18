@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func fileExtensionRetriever(mimeType string) string {
+func FileExtensionRetriever(mimeType string) string {
 	commonMIMEtypes := map[string]string{
 		// Text types
 		"text/plain":      ".txt",
@@ -45,7 +45,7 @@ func fileExtensionRetriever(mimeType string) string {
 	return fileExtension
 }
 
-func loader(done chan bool) {
+func Loader(done chan bool) {
 	symbols := []string{"|", "/", "-", "\\"}
 
 	i := 0

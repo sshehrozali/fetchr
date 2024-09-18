@@ -2,22 +2,21 @@ package service
 
 import (
 	"errors"
+	"filedownloader/internal/models"
+	"filedownloader/internal/utils"
 	"fmt"
 	"io"
 	"net/http"
-	"time"
-	"filedownloader/internal/models"
-	"filedownloader/internal/utils"
 )
 
 type NetworkClient interface {
-	httpGet(url string) (*http.Response, error)
+	HttpGet(url string) (*http.Response, error)
 	// ftp
 	// other protocols...
 }
 
 type Storage interface {
-	Save(data []byte) (int, error)
+	SaveLocally(fileName string, data []byte) (int, error)
 	// Load
 	// fetch, etc..
 }
@@ -39,14 +38,14 @@ func (d *Downloader) download(url string) (models.DownloadResult, error) {
 
 	// then start loader
 	done := make(chan bool)
-	utils.
+	utils.Loader(done)
 
 	// For HTTP/s URL, perform blocking GET
-	// response, err := d.networkClient.httpGet(url)
+	response, err := d.networkClient.HttpGet(url)
 
 	// Stop the loader
-	// done <- true
-	// close(done)
+	done <- true
+	close(done)
 
 	if err != nil {
 		return models.DownloadResult{}, errors.New("error while performing HTTP GET request")
@@ -69,4 +68,19 @@ func (d *Downloader) download(url string) (models.DownloadResult, error) {
 		Data:     body,
 		MimeType: mimeType,
 	}, nil
+}
+
+func (d *Downloader) save(downloadResult models.DownloadResult) error {
+	fileName := "downloaded_file" + utils.FileExtensionRetriever(downloadResult.MimeType)
+
+	size, error := d.storage.SaveLocally(fileName, downloadResult.Data)
+
+	if error != nil {
+		return errors.New("error saving downloaded file locally")
+	}
+
+	fmt.Printf("Downloaded file size: %d bytes\n", size)
+	fmt.Printf("File downloaded successfully. Check your current local directory %s\n", fileName)
+
+	return nil
 }
