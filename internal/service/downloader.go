@@ -52,7 +52,7 @@ func (d *Downloader) Download(url string) (models.DownloadResult, error) {
 	}
 
 	if response.StatusCode != http.StatusOK {
-		return models.DownloadResult{}, errors.New("download request failed with HTTP status: " + string(response.StatusCode))
+		return models.DownloadResult{}, fmt.Errorf("download request failed with HTTP status: %d", response.StatusCode)
 	}
 
 	mimeType := response.Header.Get(("Content-Type"))
