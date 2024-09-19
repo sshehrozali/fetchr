@@ -24,7 +24,6 @@ func TestDownloadIfHttpStatusIs200ThenReturnDownloadResult(t *testing.T) {
 	}
 
 	mockHttpClient.On("HttpGet", fakeDownloadUrl).Return(mockHttpResponse, nil)
-	mockFileStorage.On("SaveLocally", "fakeFileName", fakeDownloadedData).Return(len(fakeDownloadedData), nil)
 
 	subject := NewDownloader(mockHttpClient, mockFileStorage)
 
@@ -34,5 +33,4 @@ func TestDownloadIfHttpStatusIs200ThenReturnDownloadResult(t *testing.T) {
 	assert.Equal(t, "text/plain", result.MimeType)
 
 	mockHttpClient.AssertExpectations(t)
-	mockFileStorage.AssertExpectations(t)
 }

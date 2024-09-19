@@ -38,7 +38,7 @@ func (d *Downloader) Download(url string) (models.DownloadResult, error) {
 
 	// then start loader
 	done := make(chan bool)
-	utils.Loader(done)
+	go utils.Loader(done)
 
 	// For HTTP/s URL, perform blocking GET
 	response, err := d.networkClient.HttpGet(url)
