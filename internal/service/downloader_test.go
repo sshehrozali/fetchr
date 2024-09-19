@@ -5,5 +5,8 @@ import ("testing"
 
 func TestDownloadIfHttpStatusIs200ThenReturnDownloadResult(t *testing.T) {
 
-	subject := NewDownloader()
+	mockHttpClient := new(tests.MockHttpClient)
+	mockFileStorage := new(tests.MockFileStorage)
+
+	subject := NewDownloader(mockHttpClient, mockFileStorage)
 }
