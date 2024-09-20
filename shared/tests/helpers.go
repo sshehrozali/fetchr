@@ -1,14 +1,13 @@
-package main
+package tests
 
 import (
 	"bytes"
 	"os"
 	"testing"
-
 	"github.com/stretchr/testify/assert"
 )
 
-func setMockCliInput(mockInput string) {
+func SetMockCliInput(mockInput string) {
 	// Open pipe for read-write I/O
 	r, w, _ := os.Pipe()
 
@@ -19,7 +18,7 @@ func setMockCliInput(mockInput string) {
 	os.Stdin = r
 }
 
-func captureStdOutput() (*os.File, *os.File) {
+func CaptureStdOutput() (*os.File, *os.File) {
 	// Capture os.Stdout output to verify printed messages
 	rOut, wOut, _ := os.Pipe()
 	os.Stdout = wOut // write stdout in pipe
@@ -27,7 +26,7 @@ func captureStdOutput() (*os.File, *os.File) {
 	return rOut, wOut
 }
 
-func assertStdOutput(rOut *os.File, wOut *os.File, expected string, t *testing.T) {
+func AssertStdOutput(rOut *os.File, wOut *os.File, expected string, t *testing.T) {
 	// Close and reset os.Stdout so we can read the output
 	wOut.Close()
 	var buf bytes.Buffer

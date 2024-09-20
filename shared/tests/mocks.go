@@ -6,10 +6,10 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-var exitCode int
+var ExitCode int
 
-func mockExit(code int) {
-	exitCode = code
+func MockExit(code int) {
+	ExitCode = code
 }
 
 // Mock Http client
