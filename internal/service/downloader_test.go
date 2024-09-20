@@ -1,12 +1,16 @@
 package service
 
 import (
-	"bytes"
+	"filedownloader/internal/models"
 	"filedownloader/shared/tests"
-	"github.com/stretchr/testify/assert"
+	"fmt"
+
+	"bytes"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var fakeDownloadUrl = "url"
@@ -51,7 +55,29 @@ func TestDownloadIfHttpStatusIsNot200ThenReturnError(t *testing.T) {
 
 	_, err := subject.Download(fakeDownloadUrl)
 
-	assert.Error(t, err, "Expectation passed")
+	assert.Error(t, err, "Error occured")
 
 	mockHttpClient.AssertExpectations(t)
+}
+
+func TestSaveIfFileIsSavedLocallyThenPrintFileSizeOnCli(t *testing.T) {
+	fakeFileSizeInBytes := 10008232
+	mockHttpClient := new(tests.MockHttpClient)
+	mockFileStorage := new(tests.MockFileStorage)
+
+	mockFileStorage.On("SaveLocally", "downloaded_file.txt", fakeDownloadedData).Return(fakeFileSizeInBytes, nil)
+
+	rOut, wOut := tests.CaptureStdOutput()
+
+	subject := NewDownloader(mockHttpClient, mockFileStorage)
+
+	err := subject.Save(models.DownloadResult{
+		Data:     fakeDownloadedData,
+		MimeType: "text/plain",
+	})
+
+	assert.NoError(t, err, "No error occured")
+	tests.AssertStdOutput(rOut, wOut, fmt.Sprintf("Downloaded file size: %d bytes", fakeFileSizeInBytes), t)
+
+	mockFileStorage.AssertExpectations(t)
 }
