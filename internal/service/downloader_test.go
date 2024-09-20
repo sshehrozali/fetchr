@@ -34,3 +34,24 @@ func TestDownloadIfHttpStatusIs200ThenReturnDownloadResult(t *testing.T) {
 
 	mockHttpClient.AssertExpectations(t)
 }
+
+func TestDownloadIfHttpStatusIsNot200ThenReturnError(t *testing.T) {
+	mockHttpClient := new(tests.MockHttpClient)
+	mockFileStorage := new(tests.MockFileStorage)
+
+	mockHttpResponse := &http.Response{
+		StatusCode: http.StatusInternalServerError,
+		Body:       io.NopCloser(bytes.NewBufferString("internal server error")),
+		Header:     http.Header{"Content-Type": []string{"text/plain"}},
+	}
+
+	mockHttpClient.On("HttpGet", fakeDownloadUrl).Return(mockHttpResponse, nil)
+
+	subject := NewDownloader(mockHttpClient, mockFileStorage)
+
+	_, err := subject.Download(fakeDownloadUrl)
+
+	assert.Error(t, err, "Expectation passed")
+
+	mockHttpClient.AssertExpectations(t)
+}
