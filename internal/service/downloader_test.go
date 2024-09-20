@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"filedownloader/internal/models"
 	"filedownloader/shared/tests"
 	"fmt"
@@ -78,6 +79,24 @@ func TestSaveIfFileIsSavedLocallyThenPrintFileSizeOnCli(t *testing.T) {
 
 	assert.NoError(t, err, "No error occured")
 	tests.AssertStdOutput(rOut, wOut, fmt.Sprintf("Downloaded file size: %d bytes", fakeFileSizeInBytes), t)
+
+	mockFileStorage.AssertExpectations(t)
+}
+
+func TestSaveIfFileFailedToSaveLocallyThenReturnError(t *testing.T) {
+	mockHttpClient := new(tests.MockHttpClient)
+	mockFileStorage := new(tests.MockFileStorage)
+
+	mockFileStorage.On("SaveLocally", "downloaded_file.txt", fakeDownloadedData).Return(0, errors.New("mock error message"))
+
+	subject := NewDownloader(mockHttpClient, mockFileStorage)
+
+	err := subject.Save(models.DownloadResult{
+		Data:     fakeDownloadedData,
+		MimeType: "text/plain",
+	})
+
+	assert.Error(t, err, "Error occured")
 
 	mockFileStorage.AssertExpectations(t)
 }
