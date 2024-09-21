@@ -14,3 +14,11 @@ func TestPromptInputIfUrlIsNotEmptyThenReturnUrl(t *testing.T) {
 
 	assert.Equal(t, "download_url", url)
 }
+
+func TestPromptInputIfUrlIsEmptyThenReturnError(t *testing.T) {
+	tests.SetMockCliInput("")
+
+	_, err := PromptInput()
+
+	assert.Error(t, err, "Error occured")
+}
