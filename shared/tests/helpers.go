@@ -38,9 +38,9 @@ func AssertStdOutput(rOut *os.File, wOut *os.File, expected string, t *testing.T
 	assert.Contains(t, buf.String(), expected)
 }
 
-func StartMockWebServer(responseData string) *httptest.Server {
+func StartMockWebServer(endpoint string, responseData string) *httptest.Server {
 	handler := http.NewServeMux()
-	handler.HandleFunc("/download/file", func(w http.ResponseWriter, r *http.Request) {
+	handler.HandleFunc(endpoint, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain")
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(responseData))

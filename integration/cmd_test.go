@@ -5,7 +5,7 @@ import ("testing"
 "filedownloader/cmd")
 
 func Test_Run_ShouldDownloadFileFromServerAndSaveLocally(t *testing.T) {
-	mockWebServer := tests.StartMockWebServer("sample response data")
+	mockWebServer := tests.StartMockWebServer("/download/file", "sample response data")
 	defer mockWebServer.Close()
 
 	testDownloadUrl := mockWebServer.URL + "/download/file"
@@ -13,5 +13,5 @@ func Test_Run_ShouldDownloadFileFromServerAndSaveLocally(t *testing.T) {
 
 	cmd.Run()
 
-	
+
 }
