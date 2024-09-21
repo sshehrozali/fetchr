@@ -2,8 +2,11 @@ package tests
 
 import (
 	"bytes"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -33,4 +36,15 @@ func AssertStdOutput(rOut *os.File, wOut *os.File, expected string, t *testing.T
 	buf.ReadFrom(rOut)
 
 	assert.Contains(t, buf.String(), expected)
+}
+
+func StartMockWebServer(responseData string) *httptest.Server {
+	handler := http.NewServeMux()
+	handler.HandleFunc("/download/file", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(responseData))
+	})
+
+	return httptest.NewServer(handler)
 }
