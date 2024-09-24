@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPromptInputIfUrlIsNotEmptyThenReturnUrl(t *testing.T) {
+func Test_PromptInput_IfUrlIsNotEmptyThenReturnUrl(t *testing.T) {
 	tests.SetMockCliInput("download_url")
 
 	url, _ := PromptInput()
@@ -15,7 +15,7 @@ func TestPromptInputIfUrlIsNotEmptyThenReturnUrl(t *testing.T) {
 	assert.Equal(t, "download_url", url)
 }
 
-func TestPromptInputIfUrlIsEmptyThenReturnError(t *testing.T) {
+func Test_PromptInput_IfUrlIsEmptyThenReturnError(t *testing.T) {
 	tests.SetMockCliInput("")
 
 	_, err := PromptInput()

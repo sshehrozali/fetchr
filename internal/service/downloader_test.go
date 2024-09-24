@@ -17,7 +17,7 @@ import (
 var fakeDownloadUrl = "url"
 var fakeDownloadedData = []byte("fake binary data")
 
-func TestDownloadIfHttpStatusIs200ThenReturnDownloadResult(t *testing.T) {
+func Test_Download_IfHttpStatusIs200ThenReturnDownloadResult(t *testing.T) {
 
 	mockHttpClient := new(tests.MockHttpClient)
 	mockFileStorage := new(tests.MockFileStorage)
@@ -40,7 +40,7 @@ func TestDownloadIfHttpStatusIs200ThenReturnDownloadResult(t *testing.T) {
 	mockHttpClient.AssertExpectations(t)
 }
 
-func TestDownloadIfHttpStatusIsNot200ThenReturnError(t *testing.T) {
+func Test_Download_IfHttpStatusIsNot200ThenReturnError(t *testing.T) {
 	mockHttpClient := new(tests.MockHttpClient)
 	mockFileStorage := new(tests.MockFileStorage)
 
@@ -61,7 +61,7 @@ func TestDownloadIfHttpStatusIsNot200ThenReturnError(t *testing.T) {
 	mockHttpClient.AssertExpectations(t)
 }
 
-func TestSaveIfFileIsSavedLocallyThenPrintFileSizeOnCli(t *testing.T) {
+func Test_Save_IfFileIsSavedLocallyThenPrintFileSizeOnCli(t *testing.T) {
 	fakeFileSizeInBytes := 10008232
 	mockHttpClient := new(tests.MockHttpClient)
 	mockFileStorage := new(tests.MockFileStorage)
@@ -83,7 +83,7 @@ func TestSaveIfFileIsSavedLocallyThenPrintFileSizeOnCli(t *testing.T) {
 	mockFileStorage.AssertExpectations(t)
 }
 
-func TestSaveIfFileFailedToSaveLocallyThenReturnError(t *testing.T) {
+func Test_Save_IfFileFailedToSaveLocallyThenReturnError(t *testing.T) {
 	mockHttpClient := new(tests.MockHttpClient)
 	mockFileStorage := new(tests.MockFileStorage)
 
