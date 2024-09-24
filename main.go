@@ -5,5 +5,9 @@ import (
 )
 
 func main() {
-	cmd.Run()
+	runErr := cmd.Run()
+
+	if runErr != nil {
+		println(runErr.Error())
+	}
 }

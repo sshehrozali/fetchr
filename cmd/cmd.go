@@ -11,7 +11,7 @@ import (
 // GLOBALs
 var exit = os.Exit
 
-func Run() {
+func Run() error {
 	url, cliErr := cli.PromptInput()
 
 	if cliErr != nil {
@@ -34,9 +34,8 @@ func Run() {
 	saveErr := downloader.Save(result)
 
 	if saveErr != nil {
-		println(saveErr.Error())
-		exit(1)
+		return saveErr
 	}
 
-	exit(0) // close the program
+	return nil
 }
