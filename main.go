@@ -1,7 +1,7 @@
 package main
 
 import (
-	"filedownloader/cmd"
+	"fetchr/cmd"
 )
 
 func main() {

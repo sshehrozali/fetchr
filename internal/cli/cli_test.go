@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"filedownloader/shared/tests"
+	"fetchr/shared/tests"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

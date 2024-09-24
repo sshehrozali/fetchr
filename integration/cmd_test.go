@@ -1,8 +1,8 @@
 package integration
 
 import (
-	"filedownloader/cmd"
-	"filedownloader/shared/tests"
+	"fetchr/cmd"
+	"fetchr/shared/tests"
 	"os"
 	"testing"
 

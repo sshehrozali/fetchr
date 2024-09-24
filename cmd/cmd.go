@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"filedownloader/internal/cli"
-	"filedownloader/internal/network"
-	"filedownloader/internal/service"
-	"filedownloader/internal/storage"
+	"fetchr/internal/cli"
+	"fetchr/internal/network"
+	"fetchr/internal/service"
+	"fetchr/internal/storage"
 	"os"
 )
 

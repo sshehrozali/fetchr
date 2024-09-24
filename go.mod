@@ -1,4 +1,4 @@
-module filedownloader
+module fetchr
 
 go 1.23
 

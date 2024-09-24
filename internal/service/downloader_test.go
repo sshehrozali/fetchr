@@ -2,8 +2,8 @@ package service
 
 import (
 	"errors"
-	"filedownloader/internal/models"
-	"filedownloader/shared/tests"
+	"fetchr/internal/models"
+	"fetchr/shared/tests"
 	"fmt"
 
 	"bytes"

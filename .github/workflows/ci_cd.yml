@@ -1,4 +1,4 @@
-name: Build, Test, and Release Go CLI
+name: Build, Test, and Publish Go CLI
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: '1.20'
+        go-version: '1.23'
 
     - name: Build
       run: go build -v ./...
@@ -26,8 +26,8 @@ jobs:
     - name: Test
       run: go test -v ./...
 
-  release:
-    name: Release
+  publish:
+    name: Publish
     needs: build
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: '1.20'
+        go-version: '1.23'
 
     - name: Build
       env:

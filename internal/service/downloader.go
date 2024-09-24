@@ -2,8 +2,8 @@ package service
 
 import (
 	"errors"
-	"filedownloader/internal/models"
-	"filedownloader/internal/utils"
+	"fetchr/internal/models"
+	"fetchr/internal/utils"
 	"fmt"
 	"io"
 	"net/http"
