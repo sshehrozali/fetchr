@@ -5,6 +5,7 @@ import (
 	"fetchr/internal/network"
 	"fetchr/internal/service"
 	"fetchr/internal/storage"
+	"log"
 	"os"
 )
 
@@ -15,8 +16,7 @@ func Run() error {
 	url, cliErr := cli.PromptInput()
 
 	if cliErr != nil {
-		println(cliErr.Error())
-		exit(1)
+		log.Fatal(cliErr.Error())
 	}
 
 	httpClient := &network.HttpClient{}

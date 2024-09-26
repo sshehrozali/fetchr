@@ -2,18 +2,18 @@ package cli
 
 import (
 	"errors"
-	"fmt"
+	"flag"
 )
 
 func PromptInput() (string, error) {
-	var url string
 
-	fmt.Print("Enter download URL: ")
-	fmt.Scanln(&url)
+	url := flag.String("url", "", "URL of the file to download")
+	// output := flag.String("o", "output_file", "Output file path (default: output_file)")
+	flag.Parse()
 
-	if url == "" {
-		return "", errors.New("url can't be empty")
+	if *url == "" {
+		return "", errors.New("Please provide a URL using the -url flag")
 	}
 
-	return url, nil
+	return *url, nil
 }
