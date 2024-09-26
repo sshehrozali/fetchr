@@ -12,7 +12,7 @@ func PromptInput() (string, error) {
 	flag.Parse()
 
 	if *url == "" {
-		return "", errors.New("Please provide a URL using the -url flag")
+		return "", errors.New("please provide a URL using the -url flag")
 	}
 
 	return *url, nil
