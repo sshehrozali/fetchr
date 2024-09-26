@@ -6,11 +6,7 @@ import (
 	"fetchr/internal/service"
 	"fetchr/internal/storage"
 	"log"
-	"os"
 )
-
-// GLOBALs
-var exit = os.Exit
 
 func Run() error {
 	url, cliErr := cli.PromptInput()
@@ -27,8 +23,7 @@ func Run() error {
 	result, downloadErr := downloader.Download(url)
 
 	if downloadErr != nil {
-		println(downloadErr.Error())
-		exit(1)
+		log.Fatal(downloadErr.Error())
 	}
 
 	saveErr := downloader.Save(result)
