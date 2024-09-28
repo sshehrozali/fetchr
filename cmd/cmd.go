@@ -5,18 +5,14 @@ import (
 	"fetchr/internal/network"
 	"fetchr/internal/service"
 	"fetchr/internal/storage"
-	"os"
+	"log"
 )
-
-// GLOBALs
-var exit = os.Exit
 
 func Run() error {
 	url, cliErr := cli.PromptInput()
 
 	if cliErr != nil {
-		println(cliErr.Error())
-		exit(1)
+		log.Fatal(cliErr.Error())
 	}
 
 	httpClient := &network.HttpClient{}
@@ -27,8 +23,7 @@ func Run() error {
 	result, downloadErr := downloader.Download(url)
 
 	if downloadErr != nil {
-		println(downloadErr.Error())
-		exit(1)
+		log.Fatal(downloadErr.Error())
 	}
 
 	saveErr := downloader.Save(result)

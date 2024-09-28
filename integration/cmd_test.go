@@ -14,7 +14,7 @@ func Test_Run_ShouldDownloadFileFromServerAndSaveLocally(t *testing.T) {
 	defer mockWebServer.Close()
 
 	testDownloadUrl := mockWebServer.URL + "/download/file"
-	tests.SetMockCliInput(testDownloadUrl)
+	os.Args = []string{"cmd", "-url", testDownloadUrl}
 
 	err := cmd.Run()
 
