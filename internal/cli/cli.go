@@ -17,7 +17,7 @@ func PromptInput() (string, error) {
 		return "", errors.New("url can't be empty")
 	}
 
-	if len(url) < 8 || url[:8] != "https://" { 
+	if len(url) < 8 || url[:8] != "https://" {
 		return "", errors.New("The URL must contain https://")
 	}
 
@@ -25,5 +25,4 @@ func PromptInput() (string, error) {
 
 }
 
-
-// Sample URL --> https://filesampleshub.com/format/image/jpg
+// Sample URL -> https://filesampleshub.com/format/image/jpg
