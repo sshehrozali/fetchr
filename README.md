@@ -7,7 +7,7 @@ Fetchr is a simple, fast, and reliable CLI tool designed for downloading files f
 
 - **Multi-platform Support**: Runs on macOS, Linux, and Windows.
 - **Fast Downloads**: Optimized for speed to ensure quick file retrieval.
-- **Command Line Interface**: Easy to use CLI for seamless interaction.
+- **Command Line Interface**: Easy-to-use CLI for seamless interaction.
 - **Batch Downloading**: Automate downloads of multiple files with ease.
 
 ## Installation
@@ -25,38 +25,42 @@ The easiest way to use Fetchr is to download the pre-built binaries for your ope
 If you prefer to build Fetchr from source, follow these steps:
 
 1. Clone the repository:
-   \`\`\`bash
+
+   ```bash
    git clone https://github.com/sshehrozali/fetchr.git
-   \`\`\`
+   ```
 
 2. Navigate into the directory:
-   \`\`\`bash
+
+   ```bash
    cd fetchr
-   \`\`\`
+   ```
 
 3. Build the application:
-   \`\`\`bash
+
+   ```bash
    go build -o fetchr
-   \`\`\`
+   ```
 
 4. Move the executable to your PATH:
-   \`\`\`bash
+
+   ```bash
    mv fetchr /usr/local/bin/  # For Linux or macOS
-   \`\`\`
+   ```
 
 ## Usage
 
-You can use Fetchr to download files by simply running the following command in your terminal:
+You can use Fetchr to download files by running the following command in your terminal:
 
-\`\`\`bash
+```bash
 fetchr <URL>
-\`\`\`
+```
 
-To download multiple files at once, you can provide a list of URLs:
+To download multiple files at once, provide a list of URLs:
 
-\`\`\`bash
+```bash
 fetchr <URL1> <URL2> <URL3>
-\`\`\`
+```
 
 ## Upcoming Features (WIP)
 
@@ -74,7 +78,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Author
 
-- **Nehad Shakoor** - [Nehadsys]](https://github.com/Nehadsys)
+- **Nehad Shakoor** - [Nehadsys](https://github.com/Nehadsys)
 
 ## Acknowledgments
 
