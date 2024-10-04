@@ -75,11 +75,3 @@ Contributions are welcome! If you have suggestions for improvements or new featu
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Author
-
-- **Nehad Shakoor** - [Nehadsys](https://github.com/Nehadsys)
-
-## Acknowledgments
-
-- Thanks to the Go community for their excellent resources and support.
