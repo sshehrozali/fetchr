@@ -16,8 +16,8 @@ func PromptInput() (string, error) {
 		return "", errors.New("please provide a URL using the -url flag")
 	}
 
-	if !strings.HasPrefix(*url, "https://") {
-		return "", errors.New("The URL must contain https://")
+	if !strings.HasPrefix(*url, "https://") && !strings.HasPrefix(*url, "http://") {
+		return "", errors.New("the URL must contain http/s")
 	}
 
 	return *url, nil
