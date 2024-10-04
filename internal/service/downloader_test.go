@@ -3,7 +3,7 @@ package service
 import (
 	"errors"
 	"fetchr/internal/models"
-	"fetchr/shared/tests"
+	"fetchr/tests/shared"
 	"fmt"
 
 	"bytes"

@@ -2,7 +2,7 @@ package integration
 
 import (
 	"fetchr/cmd"
-	"fetchr/shared/tests"
+	"fetchr/tests/shared"
 	"os"
 	"testing"
 
