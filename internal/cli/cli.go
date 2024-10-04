@@ -3,6 +3,7 @@ package cli
 import (
 	"errors"
 	"flag"
+	"strings"
 )
 
 func PromptInput() (string, error) {
@@ -13,6 +14,10 @@ func PromptInput() (string, error) {
 
 	if *url == "" {
 		return "", errors.New("please provide a URL using the -url flag")
+	}
+
+	if !strings.HasPrefix(*url, "https://") {
+		return "", errors.New("The URL must contain https://")
 	}
 
 	return *url, nil
